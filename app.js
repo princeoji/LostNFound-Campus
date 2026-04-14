@@ -23,6 +23,7 @@
     { rollNo: '2200320101011', name: 'Karthik Menon', dob: '2003-12-22', year: '3rd Year', course: 'B.Tech ECE' },
     { rollNo: '2300320108012', name: 'Ishita Agarwal', dob: '2004-10-05', year: '2nd Year', course: 'B.Sc' },
     { rollNo: '2300320100193', name: 'Prince Kumar', dob: '2004-12-29', year: '3nd Year', course: 'B.Tech CSE' },
+     { rollNo: 'OPTO-700', name: 'Anshika Goyal', dob: '2004-01-29', year: '3nd Year', course: 'B.Opto' },
   ];
 
   // ─── Dynamic Student Roster (localStorage-backed) ──────────
