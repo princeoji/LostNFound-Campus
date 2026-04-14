@@ -481,6 +481,15 @@
     </div>
   </div>
 
+  <script type="module">
+    // Import and initialize Vercel Speed Insights
+    import { injectSpeedInsights } from 'https://cdn.jsdelivr.net/npm/@vercel/speed-insights@2.0.0/dist/index.mjs';
+    
+    // Initialize Speed Insights with default configuration
+    injectSpeedInsights({
+      debug: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    });
+  </script>
   <script src="app.js"></script>
 </body>
 </html>

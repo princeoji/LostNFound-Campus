@@ -1,0 +1,23 @@
+{
+  "name": "lost-n-found-campus",
+  "version": "1.0.0",
+  "description": "College Lost & Found — Report found items or search for your lost belongings. Secure, student-only platform.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/princeoji/LostNFound-Campus.git"
+  },
+  "keywords": ["lost-and-found", "campus", "vercel"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/princeoji/LostNFound-Campus/issues"
+  },
+  "homepage": "https://github.com/princeoji/LostNFound-Campus#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
