@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="College Lost & Found — Report found items or search for your lost belongings. Secure, student-only platform." />
+  <title>Lost & Found | College Campus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ LOADING SCREEN ============ -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loader-content">
+      <div class="loader-icon">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="26" stroke="url(#grad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="120" stroke-dashoffset="60">
+            <animateTransform attributeName="transform" type="rotate" from="0 30 30" to="360 30 30" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <defs><linearGradient id="grad" x1="0" y1="0" x2="60" y2="60"><stop stop-color="#00d4aa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+        </svg>
+      </div>
+      <p class="loader-text">Loading&hellip;</p>
+    </div>
+  </div>
+
+  <!-- ============ TOAST CONTAINER ============ -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ============ LOGIN VIEW ============ -->
+  <section id="viewLogin" class="view view--login">
+    <div class="login-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="login-card glass-panel">
+      <div class="login-header">
+        <div class="logo-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="14" fill="url(#logoGrad)"/>
+            <path d="M16 32V20a8 8 0 1 1 16 0v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="26" r="3" fill="#fff"/>
+            <path d="M24 29v4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#00d4aa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+          </svg>
+        </div>
+        <h1 class="login-title">Lost & Found</h1>
+        <p class="login-subtitle">College Campus Portal</p>
+      </div>
+      <form id="loginForm" class="login-form" autocomplete="off">
+        <div class="form-group">
+          <label for="loginRollNo">Roll Number</label>
+          <input type="text" id="loginRollNo" placeholder="e.g. 2300320100193" required />
+        </div>
+        <div class="form-group">
+          <label for="loginDob">Date of Birth</label>
+          <input type="date" id="loginDob" required />
+        </div>
+        <button type="submit" id="loginBtn" class="btn btn-primary btn-full">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loader"></span>
+        </button>
+        <div class="login-footer">
+          <p class="login-note">Access restricted to registered students only.</p>
+          <p class="login-switch">New student? <a href="#" id="goToSignup" class="link-accent">Create Account</a></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ SIGN UP VIEW ============ -->
+  <section id="viewSignup" class="view view--login hidden">
+    <div class="login-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="login-card glass-panel signup-card">
+      <div class="login-header">
+        <div class="logo-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="14" fill="url(#logoGradS)"/>
+            <path d="M16 32V20a8 8 0 1 1 16 0v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="26" r="3" fill="#fff"/>
+            <path d="M24 29v4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="logoGradS" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#00d4aa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+          </svg>
+        </div>
+        <h1 class="login-title">Create Account</h1>
+        <p class="login-subtitle">Register as a new student</p>
+      </div>
+      <form id="signupForm" class="login-form" autocomplete="off">
+        <div class="form-group">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="e.g. Aarav Sharma" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signupRollNo">Roll Number</label>
+            <input type="text" id="signupRollNo" placeholder="e.g. 2300320100193" required />
+            <span class="field-hint">Format: YYOO + 320 + Course Code + Roll No</span>
+          </div>
+          <div class="form-group">
+            <label for="signupDob">Date of Birth</label>
+            <input type="date" id="signupDob" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signupYear">Current Year</label>
+            <div class="select-wrapper">
+              <select id="signupYear" required>
+                <option value="" disabled selected>Select year</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="signupCourse">Course</label>
+            <div class="select-wrapper">
+              <select id="signupCourse" required>
+                <option value="" disabled selected>Select course</option>
+                <option value="B.Tech CSE">B.Tech CSE</option>
+                <option value="B.Tech ECE">B.Tech ECE</option>
+                <option value="B.Tech ME">B.Tech ME</option>
+                <option value="B.Tech CE">B.Tech CE</option>
+                <option value="B.Tech EE">B.Tech EE</option>
+                <option value="B.Tech IT">B.Tech IT</option>
+                <option value="BCA">BCA</option>
+                <option value="BBA">BBA</option>
+                <option value="B.Sc">B.Sc</option>
+                <option value="B.Com">B.Com</option>
+                <option value="BA">BA</option>
+                <option value="MBA">MBA</option>
+                <option value="MCA">MCA</option>
+                <option value="M.Tech">M.Tech</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="submit" id="signupBtn" class="btn btn-primary btn-full">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-loader"></span>
+        </button>
+        <div class="login-footer">
+          <p class="login-switch">Already registered? <a href="#" id="goToLogin" class="link-accent">Sign In</a></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ DASHBOARD VIEW ============ -->
+  <section id="viewDashboard" class="view view--dashboard hidden">
+    <header class="app-header glass-panel">
+      <div class="header-left">
+        <div class="logo-sm">
+          <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+            <rect width="48" height="48" rx="14" fill="url(#logoGrad2)"/>
+            <path d="M16 32V20a8 8 0 1 1 16 0v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="24" cy="26" r="3" fill="#fff"/>
+            <path d="M24 29v4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <defs><linearGradient id="logoGrad2" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#00d4aa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+          </svg>
+        </div>
+        <span class="header-title">Lost & Found</span>
+      </div>
+      <div class="header-right">
+        <span id="headerUser" class="header-user"></span>
+        <button id="logoutBtn" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </header>
+    <main class="dashboard-main dashboard-layout">
+      <!-- ── LEFT SIDEBAR ── -->
+      <aside class="dashboard-sidebar">
+        <!-- Points Card -->
+        <div class="points-card glass-panel">
+          <div class="points-icon">⭐</div>
+          <span class="points-value" id="userPoints">0</span>
+          <span class="points-label">Karma Points</span>
+          <div class="points-bar-wrap">
+            <div class="points-bar" id="pointsBar" style="width: 0%"></div>
+          </div>
+          <span class="points-tier" id="pointsTier">Newcomer</span>
+        </div>
+
+        <!-- My Listings -->
+        <div class="my-listings-section">
+          <h3 class="sidebar-title">My Listings</h3>
+          <div id="myListingsGrid" class="my-listings-grid"></div>
+          <div id="myListingsEmpty" class="my-listings-empty hidden">
+            <p>You haven't listed any items yet.</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ── MAIN CONTENT ── -->
+      <div class="dashboard-content">
+        <div class="welcome-section">
+          <h2 class="welcome-title" id="welcomeTitle">Welcome back!</h2>
+          <p class="welcome-sub">What would you like to do today?</p>
+        </div>
+        <div class="action-cards">
+          <button id="actionList" class="action-card glass-panel">
+            <div class="action-icon action-icon--list">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="8" y="6" width="32" height="36" rx="6" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M16 16h16M16 24h12M16 32h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="36" cy="36" r="8" fill="url(#addGrad)"/>
+                <path d="M36 32v8M32 36h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                <defs><linearGradient id="addGrad" x1="28" y1="28" x2="44" y2="44"><stop stop-color="#00d4aa"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs>
+              </svg>
+            </div>
+            <h3 class="action-title">List an Item</h3>
+            <p class="action-desc">Report an item you've found on campus</p>
+          </button>
+          <button id="actionFind" class="action-card glass-panel">
+            <div class="action-icon action-icon--find">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle cx="22" cy="22" r="14" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M32 32l10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="22" cy="22" r="6" stroke="url(#searchGrad)" stroke-width="2"/>
+                <defs><linearGradient id="searchGrad" x1="16" y1="16" x2="28" y2="28"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs>
+              </svg>
+            </div>
+            <h3 class="action-title">Find an Item</h3>
+            <p class="action-desc">Search for something you've lost</p>
+          </button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+          <div class="stat-card glass-panel">
+            <span class="stat-number" id="statTotal">0</span>
+            <span class="stat-label">Total Items</span>
+          </div>
+          <div class="stat-card glass-panel">
+            <span class="stat-number" id="statToday">0</span>
+            <span class="stat-label">Listed Today</span>
+          </div>
+          <div class="stat-card glass-panel">
+            <span class="stat-number" id="statCategories">0</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat-card glass-panel stat-card--found">
+            <span class="stat-number" id="statFound">0</span>
+            <span class="stat-label">Items Returned ✅</span>
+          </div>
+        </div>
+
+        <!-- Recent Items Preview -->
+        <div class="recent-section">
+          <h3 class="section-title">Recently Listed</h3>
+          <div id="recentGrid" class="items-grid"></div>
+          <div id="recentEmpty" class="empty-state hidden">
+            <div class="empty-illustration" id="emptyIllustration">
+              <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+                <circle cx="90" cy="90" r="80" fill="rgba(124,58,237,0.08)"/>
+                <circle cx="90" cy="90" r="55" fill="rgba(0,212,170,0.06)"/>
+                <rect x="60" y="55" width="60" height="70" rx="12" stroke="#4a5568" stroke-width="2" stroke-dasharray="6 4"/>
+                <path d="M78 85a12 12 0 0 1 24 0" stroke="#00d4aa" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="82" cy="78" r="2" fill="#7c3aed"/>
+                <circle cx="98" cy="78" r="2" fill="#7c3aed"/>
+                <path d="M75 110h30" stroke="#4a5568" stroke-width="2" stroke-linecap="round"/>
+                <path d="M80 118h20" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="empty-title">No items listed yet</p>
+            <p class="empty-sub">Be the first to report a found item!</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- ============ LIST ITEM VIEW ============ -->
+  <section id="viewList" class="view view--list hidden">
+    <header class="app-header glass-panel">
+      <div class="header-left">
+        <button id="listBackBtn" class="btn btn-icon" aria-label="Go back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="header-title">List an Item</span>
+      </div>
+      <div class="header-right">
+        <button id="logoutBtn2" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </header>
+
+    <main class="form-main">
+      <form id="listItemForm" class="item-form glass-panel">
+        <h2 class="form-heading">Report a Found Item</h2>
+        <p class="form-sub">Help someone reunite with their belongings</p>
+
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label>Item Photo</label>
+          <div id="dropZone" class="drop-zone">
+            <div class="drop-zone-prompt" id="dropPrompt">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="6" y="10" width="36" height="28" rx="6" stroke="#64748b" stroke-width="2"/>
+                <circle cx="18" cy="22" r="4" stroke="#64748b" stroke-width="2"/>
+                <path d="M6 32l10-8 8 6 8-10 10 12" stroke="#00d4aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p>Drag & drop an image here or <span class="drop-zone-browse">browse</span></p>
+              <span class="drop-zone-hint">PNG, JPG up to 5MB</span>
+            </div>
+            <img id="imagePreview" class="drop-zone-preview hidden" alt="Preview" />
+            <button type="button" id="removeImage" class="remove-image-btn hidden" aria-label="Remove image">&times;</button>
+            <input type="file" id="imageInput" accept="image/*" hidden />
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+          <label for="itemCategory">Category</label>
+          <div class="select-wrapper">
+            <select id="itemCategory" required>
+              <option value="" disabled selected>Select a category</option>
+              <option value="Keys">🔑 Keys</option>
+              <option value="Wallet">👛 Wallet</option>
+              <option value="Phone">📱 Phone</option>
+              <option value="ID Card">🪪 ID Card</option>
+              <option value="Laptop">💻 Laptop</option>
+              <option value="Charger">🔌 Charger</option>
+              <option value="Bottle">🍶 Bottle</option>
+              <option value="Umbrella">☂️ Umbrella</option>
+              <option value="Bag">🎒 Bag</option>
+              <option value="Books">📚 Books</option>
+              <option value="Earphones">🎧 Earphones</option>
+              <option value="Other">📦 Other</option>
+            </select>
+          </div>
+          <span id="categorySuggestion" class="category-suggestion hidden"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="itemDescription">Description</label>
+          <textarea id="itemDescription" rows="3" placeholder="Describe the item — color, brand, distinguishing features…" required></textarea>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+          <label for="itemLocation">Where was it found?</label>
+          <div class="select-wrapper">
+            <select id="itemLocation" required>
+              <option value="" disabled selected>Select location</option>
+              <option value="Library">📖 Library</option>
+              <option value="Canteen">🍽️ Canteen</option>
+              <option value="Computer Lab">💻 Computer Lab</option>
+              <option value="Classroom">🏫 Classroom</option>
+              <option value="Hostel">🏠 Hostel</option>
+              <option value="Sports Ground">⚽ Sports Ground</option>
+              <option value="Parking">🅿️ Parking</option>
+              <option value="Admin Block">🏛️ Admin Block</option>
+              <option value="Auditorium">🎭 Auditorium</option>
+              <option value="Corridor">🚪 Corridor</option>
+              <option value="Other">📍 Other</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" id="submitItemBtn" class="btn btn-primary btn-full">
+          <span class="btn-text">Submit Found Item</span>
+          <span class="btn-loader"></span>
+        </button>
+      </form>
+    </main>
+  </section>
+
+  <!-- ============ FIND ITEM VIEW ============ -->
+  <section id="viewFind" class="view view--find hidden">
+    <header class="app-header glass-panel">
+      <div class="header-left">
+        <button id="findBackBtn" class="btn btn-icon" aria-label="Go back">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="header-title">Find an Item</span>
+      </div>
+      <div class="header-right">
+        <button id="logoutBtn3" class="btn btn-ghost btn-sm">Logout</button>
+      </div>
+    </header>
+
+    <main class="find-main">
+      <!-- Search Bar -->
+      <div class="search-section glass-panel">
+        <div class="search-bar">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search by keyword, category, or location…" />
+          <button type="button" id="clearSearch" class="clear-search hidden" aria-label="Clear search">&times;</button>
+        </div>
+        <div class="filter-pills" id="filterPills">
+          <button class="pill active" data-category="All">All</button>
+          <button class="pill" data-category="Keys">🔑 Keys</button>
+          <button class="pill" data-category="Wallet">👛 Wallet</button>
+          <button class="pill" data-category="Phone">📱 Phone</button>
+          <button class="pill" data-category="ID Card">🪪 ID Card</button>
+          <button class="pill" data-category="Laptop">💻 Laptop</button>
+          <button class="pill" data-category="Bag">🎒 Bag</button>
+          <button class="pill" data-category="Books">📚 Books</button>
+          <button class="pill" data-category="Other">📦 Other</button>
+        </div>
+      </div>
+
+      <!-- Results Count -->
+      <div class="results-info">
+        <span id="resultsCount">0 items found</span>
+        <span class="sort-label">Sorted by: Latest first</span>
+      </div>
+
+      <!-- Skeleton Loader -->
+      <div id="skeletonGrid" class="items-grid">
+        <div class="skeleton-card glass-panel"><div class="skeleton-img"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card glass-panel"><div class="skeleton-img"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card glass-panel"><div class="skeleton-img"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+      </div>
+
+      <!-- Items Grid -->
+      <div id="findGrid" class="items-grid hidden"></div>
+
+      <!-- Empty State -->
+      <div id="findEmpty" class="empty-state hidden">
+        <div class="empty-illustration">
+          <svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+            <circle cx="90" cy="90" r="80" fill="rgba(124,58,237,0.08)"/>
+            <circle cx="90" cy="90" r="55" fill="rgba(0,212,170,0.06)"/>
+            <circle cx="75" cy="75" r="22" stroke="#4a5568" stroke-width="2"/>
+            <path d="M91 91l16 16" stroke="#4a5568" stroke-width="3" stroke-linecap="round"/>
+            <path d="M70 70h10M75 65v10" stroke="#00d4aa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M55 110h70" stroke="#4a5568" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="6 4"/>
+          </svg>
+        </div>
+        <p class="empty-title">No items match your search</p>
+        <p class="empty-sub">Try different keywords or clear the filters.</p>
+      </div>
+    </main>
+  </section>
+
+  <!-- ============ REVEAL MODAL ============ -->
+  <div id="revealModal" class="modal-overlay hidden">
+    <div class="modal-panel glass-panel">
+      <button id="modalClose" class="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-image-wrap">
+        <img id="modalImage" src="" alt="Item" />
+      </div>
+      <div class="modal-body">
+        <span class="modal-category" id="modalCategory"></span>
+        <p class="modal-description" id="modalDescription"></p>
+        <div class="modal-meta">
+          <span class="modal-location" id="modalLocation"></span>
+          <span class="modal-time" id="modalTime"></span>
+        </div>
+        <hr class="modal-divider" />
+        <div class="modal-uploader">
+          <p class="uploader-label">Found by</p>
+          <div class="uploader-info">
+            <div class="uploader-avatar" id="modalAvatar"></div>
+            <div>
+              <p class="uploader-name" id="modalName"></p>
+              <p class="uploader-roll" id="modalRoll"></p>
+            </div>
+          </div>
+        </div>
+        <button id="markFoundBtn" class="btn btn-found btn-full hidden">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/></svg>
+          <span>Mark as Found — Owner Collected</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
