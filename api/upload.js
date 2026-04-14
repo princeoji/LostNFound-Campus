@@ -1,4 +1,5 @@
 import { put } from '@vercel/blob';
+import { hasBlobToken } from './lib/itemsStore.js';
 
 export const config = {
   api: {
@@ -20,6 +21,8 @@ export default async function handler(req, res) {
   }
 
   try {
+    const canUseBlob = hasBlobToken();
+
     // Read the raw body as a buffer
     const chunks = [];
     for await (const chunk of req) {
@@ -32,6 +35,12 @@ export default async function handler(req, res) {
     
     // If it's a direct binary upload with filename in query
     if (req.query.filename) {
+      if (!canUseBlob) {
+        const mimeType = contentType.split(';')[0] || 'image/jpeg';
+        const dataUrl = `data:${mimeType};base64,${buffer.toString('base64')}`;
+        return res.status(200).json({ url: dataUrl, storage: 'inline' });
+      }
+
       const blob = await put(req.query.filename, buffer, {
         access: 'public',
         contentType: contentType.split(';')[0] || 'image/jpeg',
@@ -77,6 +86,11 @@ export default async function handler(req, res) {
 
     if (!fileData) {
       return res.status(400).json({ error: 'No file found in upload' });
+    }
+
+    if (!canUseBlob) {
+      const dataUrl = `data:${fileMimeType};base64,${fileData.toString('base64')}`;
+      return res.status(200).json({ url: dataUrl, storage: 'inline' });
     }
 
     const blob = await put(fileName, fileData, {

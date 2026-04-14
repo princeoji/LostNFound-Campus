@@ -1,38 +1,4 @@
-import { put, list } from '@vercel/blob';
-
-// The items list is stored as a JSON blob in Vercel Blob
-const ITEMS_BLOB_PATH = 'data/items.json';
-
-// Helper: Read items from Vercel Blob
-async function getItems() {
-  try {
-    const { blobs } = await list({ prefix: 'data/items' });
-    if (blobs.length === 0) return [];
-    
-    // Find the items.json blob
-    const itemsBlob = blobs.find(b => b.pathname === ITEMS_BLOB_PATH);
-    if (!itemsBlob) return [];
-    
-    const response = await fetch(itemsBlob.url);
-    if (!response.ok) return [];
-    
-    const items = await response.json();
-    return Array.isArray(items) ? items : [];
-  } catch (error) {
-    console.error('Error reading items:', error);
-    return [];
-  }
-}
-
-// Helper: Save items to Vercel Blob
-async function saveItems(items) {
-  const blob = await put(ITEMS_BLOB_PATH, JSON.stringify(items, null, 2), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-  });
-  return blob;
-}
+import { getItems, saveItems } from './lib/itemsStore.js';
 
 export default async function handler(req, res) {
   // Handle CORS preflight
